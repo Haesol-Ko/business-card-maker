@@ -3,7 +3,6 @@ import Footer from "../footer/footer";
 import Header from "../header/header";
 import styles from './login.module.css';
 import {useHistory} from "react-router-dom";
-import {auth} from "firebase";
 
 const Login = ({authService}) => {
     const history = useHistory();

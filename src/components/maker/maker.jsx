@@ -3,6 +3,8 @@ import styles from './maker.module.css';
 import Header from "../header/header";
 import Footer from "../footer/footer";
 import {useHistory} from "react-router-dom";
+import Editor from "../editor/editor";
+import Preview from "../preview/preview";
 
 const Maker = ({authService}) => {
     const history = useHistory();
@@ -20,8 +22,11 @@ const Maker = ({authService}) => {
 
     return (
         <section className={styles.maker}>
-            <Header onLogout={onLogout}/>
-            <h1>Home</h1>
+            <Header onLogout={onLogout}/> {/* maker에서만 onLogout 전하는중 */}
+            <div className={styles.container}>
+                <Editor />
+                <Preview />
+            </div>
             <Footer />
         </section>
     )

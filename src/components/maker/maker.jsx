@@ -17,8 +17,9 @@ const Maker = ({authService}) => {
             email: 'ellie@gmail.com',
             message: 'go for it',
             fileName: 'ellie',
-            fileURL: 'ellie.png'
-,        },
+            fileURL: 'ellie.png',
+            saved: true,
+        },
         {
             id: '2',
             name: 'Ellie',
@@ -28,8 +29,9 @@ const Maker = ({authService}) => {
             email: 'ellie@gmail.com',
             message: 'go for it',
             fileName: 'ellie',
-            fileURL: null
-            },
+            fileURL: null,
+            saved: true,
+        },
         {
             id: '3',
             name: 'Ellie',
@@ -39,9 +41,11 @@ const Maker = ({authService}) => {
             email: 'ellie@gmail.com',
             message: 'go for it',
             fileName: 'ellie',
-            fileURL: null
-        }
+            fileURL: null,
+            saved: true,
+        },
     ]);
+
     const history = useHistory();
     const onLogout = () => {
         authService.logout();
@@ -55,11 +59,16 @@ const Maker = ({authService}) => {
         })
     });
 
+    const addCard = (card) => {
+        const updated = [...cards, card];
+        setCards(updated);
+    }
+
     return (
         <section className={styles.maker}>
             <Header onLogout={onLogout}/> {/* maker에서만 onLogout 전하는중 */}
             <div className={styles.container}>
-                <Editor cards={cards}/>
+                <Editor cards={cards} addCard={addCard}/>
                 <Preview cards={cards}/>
             </div>
             <Footer />

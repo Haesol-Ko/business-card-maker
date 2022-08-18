@@ -6,6 +6,10 @@
     padding: 0.5em 2em;
 }
 
+.container {
+    padding: 0;
+}
+
 .title {
     width: 100%;
     text-align: center;

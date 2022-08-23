@@ -6,7 +6,7 @@ import {useHistory} from "react-router-dom";
 import Editor from "../editor/editor";
 import Preview from "../preview/preview";
 
-const Maker = ({authService}) => {
+const Maker = ({FileInput, authService}) => {
     const [cards, setCards] = useState({
         '1': {
             id: '1',
@@ -77,18 +77,8 @@ const Maker = ({authService}) => {
     }
 
     const deleteCard = card => {
-        // 이렇게 하면 배열이 커질수록 성능에 좋지 않음
-        // let index;
-        // const updated = cards.map((card, i) => {
-        //     if (card.id === cardId) {
-        //         index = i;
-        //     }
-        //     return {...card};
-        // });
-        // delete updated[index];
-        //
-        // setCards(updated);
         setCards(cards => {
+            // 근데.. 이렇게 하면 객체의 내부 값들은 참조값이 안바뀌지 않나.. 바뀔거만 바뀌면 되나
             const updated = {...cards};
             delete updated[card.id];
             return updated;
@@ -100,6 +90,7 @@ const Maker = ({authService}) => {
             <Header onLogout={onLogout}/> {/* maker에서만 onLogout 전하는중 */}
             <div className={styles.container}>
                 <Editor
+                    FileInput={FileInput}
                     cards={cards}
                     addCard={createOrUpdateCard}
                     updateCard={createOrUpdateCard}

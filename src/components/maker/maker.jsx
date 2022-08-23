@@ -6,45 +6,10 @@ import {useHistory} from "react-router-dom";
 import Editor from "../editor/editor";
 import Preview from "../preview/preview";
 
-const Maker = ({FileInput, authService}) => {
-    const [cards, setCards] = useState({
-        '1': {
-            id: '1',
-            name: 'Ellie',
-            company: 'ea',
-            theme: 'dark',
-            title: 'developer',
-            email: 'ellie@gmail.com',
-            message: 'go for it',
-            fileName: '',
-            fileURL: 'ellie.png',
-            saved: true,
-        },
-        '2': {
-            id: '2',
-            name: 'Ellie',
-            company: 'ea',
-            theme: 'light',
-            title: 'developer',
-            email: 'ellie@gmail.com',
-            message: 'go for it',
-            fileName: '',
-            fileURL: null,
-            saved: true,
-        },
-        '3': {
-            id: '3',
-            name: 'Ellie',
-            company: 'ea',
-            theme: 'colorful',
-            title: 'developer',
-            email: 'ellie@gmail.com',
-            message: 'go for it',
-            fileName: '',
-            fileURL: null,
-            saved: true,
-        },
-});
+const Maker = ({FileInput, authService, cardRepository}) => {
+    const historyState = useHistory().location.state;
+    const [cards, setCards] = useState({});
+    const [userId, setUserId] = useState(historyState && historyState.id);
 
     const history = useHistory();
     const onLogout = () => {
@@ -52,28 +17,34 @@ const Maker = ({FileInput, authService}) => {
     }
 
     useEffect(() => {
+        if (!userId) {
+            return;
+        }
+        const stopSync = cardRepository.syncCards(userId, cards => {
+        setCards(cards);
+        });
+        return () => stopSync() // 컴포넌트가 언마운트 되었을 때 리턴한 함수를 호출
+    }, [userId]);
+
+    useEffect(() => {
         authService.onAuthChange(user => {
-            if(!user) {
+            if(user) {
+                setUserId(user.uid);
+            } else {
                 history.push('/');
+
             }
         })
     });
 
-
     const createOrUpdateCard = card => {
-        // setCards({...cards, [card.id]: card});
-
-        // 동기적으로 작동 안 할수도 있다?
-        // const updated = {...cards};
-        // updated[card.id] = card; 아 예를들어 이런 부분이 비동기적이면 그렇다는건가
-        // setCards(updated);
-
-        // 동기적으로 작동하나?
+        // set 할 때 안에 콜백 넣어주는게 좋음
         setCards(cards => {
             const updated = {...cards};
             updated[card.id] = card;
             return updated;
         });
+        cardRepository.saveCard(userId, card);
     }
 
     const deleteCard = card => {
@@ -83,6 +54,7 @@ const Maker = ({FileInput, authService}) => {
             delete updated[card.id];
             return updated;
         });
+        cardRepository.removeCard(userId, card);
     }
 
     return (

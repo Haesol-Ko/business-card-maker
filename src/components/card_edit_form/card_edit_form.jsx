@@ -10,9 +10,9 @@ const CardEditForm = ({FileInput, card, updateCard, deleteCard}) => {
         message,
         theme,
         fileName,
-        fileURL
     } = card;
 
+    // file upload 할 때
     const onFileChange = file => {
         updateCard({
             ...card,
@@ -25,6 +25,7 @@ const CardEditForm = ({FileInput, card, updateCard, deleteCard}) => {
         deleteCard(card);
     }
 
+    // form 수정할 때
     const onChange = event => {
         if (event.currentTarget == null ) {
             return;
@@ -82,7 +83,7 @@ const CardEditForm = ({FileInput, card, updateCard, deleteCard}) => {
                 name="message"
                 value={message} />
             <div className={styles.fileInput}>
-                <FileInput name={name} onFileChange={onFileChange}/>
+                <FileInput name={fileName} onFileChange={onFileChange}/>
             </div>
             <Button name='Delete' onClick={onSubmit}/>
         </form>

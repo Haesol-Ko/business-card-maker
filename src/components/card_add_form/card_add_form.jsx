@@ -38,6 +38,7 @@ const CardAddForm = ({ FileInput, onAdd }) => {
         onAdd(card);
     }
 
+    // state 받아와서 value를 정하는게 아니기 때문에 그냥 input 수정가능. add 했을 때 value들 state에 저장하고 form reset
     return (
         <form ref={formRef} className={styles.form}>
             <input

@@ -16,7 +16,7 @@ const Maker = ({FileInput, authService}) => {
             title: 'developer',
             email: 'ellie@gmail.com',
             message: 'go for it',
-            fileName: 'ellie',
+            fileName: '',
             fileURL: 'ellie.png',
             saved: true,
         },
@@ -28,7 +28,7 @@ const Maker = ({FileInput, authService}) => {
             title: 'developer',
             email: 'ellie@gmail.com',
             message: 'go for it',
-            fileName: 'ellie',
+            fileName: '',
             fileURL: null,
             saved: true,
         },
@@ -40,7 +40,7 @@ const Maker = ({FileInput, authService}) => {
             title: 'developer',
             email: 'ellie@gmail.com',
             message: 'go for it',
-            fileName: 'ellie',
+            fileName: '',
             fileURL: null,
             saved: true,
         },
@@ -65,7 +65,7 @@ const Maker = ({FileInput, authService}) => {
 
         // 동기적으로 작동 안 할수도 있다?
         // const updated = {...cards};
-        // updated[card.id] = card;
+        // updated[card.id] = card; 아 예를들어 이런 부분이 비동기적이면 그렇다는건가
         // setCards(updated);
 
         // 동기적으로 작동하나?

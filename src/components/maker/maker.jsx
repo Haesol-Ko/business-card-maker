@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import styles from './maker.module.css';
 import Header from "../header/header";
 import Footer from "../footer/footer";
@@ -12,30 +12,30 @@ const Maker = ({FileInput, authService, cardRepository}) => {
     const [userId, setUserId] = useState(historyState && historyState.id);
 
     const history = useHistory();
-    const onLogout = () => {
+    const onLogout = useCallback(() => {
         authService.logout();
-    }
+    }, [authService]);
 
     useEffect(() => {
         if (!userId) {
             return;
         }
-        const stopSync = cardRepository.syncCards(userId, cards => {
-        setCards(cards);
-        });
-        return () => stopSync() // 컴포넌트가 언마운트 되었을 때 리턴한 함수를 호출
-    }, [userId]);
+        const stopSync = cardRepository.syncCards(userId, cards =>
+            setCards(cards)
+        );
+        // 컴포넌트가 언마운트 되었을 때 리턴한 함수를 호출
+        return () => stopSync() // ref.off()
+    }, [userId, cardRepository]);
 
     useEffect(() => {
         authService.onAuthChange(user => {
-            if(user) {
+            if (user) {
                 setUserId(user.uid);
             } else {
                 history.push('/');
-
             }
         })
-    });
+    }, [authService, history]);
 
     const createOrUpdateCard = card => {
         // set 할 때 안에 콜백 넣어주는게 좋음
@@ -45,7 +45,7 @@ const Maker = ({FileInput, authService, cardRepository}) => {
             return updated;
         });
         cardRepository.saveCard(userId, card);
-    }
+    };
 
     const deleteCard = card => {
         setCards(cards => {

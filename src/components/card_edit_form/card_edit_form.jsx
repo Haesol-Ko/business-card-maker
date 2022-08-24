@@ -1,5 +1,6 @@
 import styles from './card_edit_form.module.css';
 import Button from "../button/button";
+import React from "react";
 
 const CardEditForm = ({FileInput, card, updateCard, deleteCard}) => {
     const {
@@ -90,4 +91,4 @@ const CardEditForm = ({FileInput, card, updateCard, deleteCard}) => {
     );
 }
 
-export default CardEditForm;
+export default React.memo(CardEditForm);

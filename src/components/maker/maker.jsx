@@ -37,17 +37,20 @@ const Maker = ({FileInput, authService, cardRepository}) => {
         })
     }, [authService, history]);
 
-    const createOrUpdateCard = card => {
-        // set 할 때 안에 콜백 넣어주는게 좋음
-        setCards(cards => {
-            const updated = {...cards};
-            updated[card.id] = card;
-            return updated;
-        });
-        cardRepository.saveCard(userId, card);
-    };
+    const createOrUpdateCard = useCallback(
+        card => {
+            // set 할 때 안에 콜백 넣어주는게 좋음
+            setCards(cards => {
+                const updated = {...cards};
+                updated[card.id] = card;
+                return updated;
+            });
+            cardRepository.saveCard(userId, card);
+        }, [cardRepository, userId]
+    );
 
-    const deleteCard = card => {
+
+    const deleteCard = useCallback(card => {
         setCards(cards => {
             // 근데.. 이렇게 하면 객체의 내부 값들은 참조값이 안바뀌지 않나.. 바뀔거만 바뀌면 되나
             const updated = {...cards};
@@ -55,7 +58,7 @@ const Maker = ({FileInput, authService, cardRepository}) => {
             return updated;
         });
         cardRepository.removeCard(userId, card);
-    }
+    },[cardRepository, userId])
 
     return (
         <section className={styles.maker}>
